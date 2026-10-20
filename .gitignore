@@ -1,0 +1,133 @@
+# IDE files and default extensions
+.idea
+.DS_Store
+**/*.ipynb
+**/.ipynb_checkpoints
+**/__pycache__
+
+# Cache files
+lumibot/cache
+.lumibot/
+*cache*
+!lumibot/tools/backtest_cache.py
+!lumibot/tools/parquet_series_cache.py
+!lumibot/components/agents/replay_cache.py
+!tests/test_backtest_cache_manager.py
+!tests/backtest/test_ibkr_helper_stale_end_negative_cache.py
+!tests/backtest/test_ibkr_conids_seed_from_v1_for_new_cache_version.py
+!docs/remote_cache.md
+!scripts/bench_ibkr_speed_burner_warm_cache.py
+generated-docs/
+docsrc/_build/
+**/*.pkl
+.pytest*
+
+# Development files
+venv*
+.venv*
+logs
+*debug.py
+todos.txt
+*.pem
+test_bot.py
+.vscode
+.coverage*
+.env
+.env.local
+.env.*.local
+lumi_tradier
+lumiwealth_tradier
+/ThetaTerminal.jar
+!lumibot/resources/ThetaTerminal.jar
+pytest.ini
+
+# Pypi deployment
+build
+dist
+*.egg-info
+# setup.py
+/alpaca_data_run.py
+/alpaca_run.py
+/lumibot_profiles.png
+/notebooks/scanner_parameters.xml
+/lumibot/strategies/examples/technical_analysis.py
+/technical_analysis.pyx
+/lumibot/tests/test_ib_broker.py
+test.csv
+my_dev
+/data/SPY_Minute.csv
+data/SRNE_Minute.csv
+.vscode/**
+*.tmp
+.env
+token.json
+schwab_token.json
+
+# AI assistant instruction files (contain local paths)
+CLAUDE.md
+AGENTS.md
+
+# Allow scoped agent instructions for the test suite.
+!tests/AGENTS.md
+
+# Acceptance backtest run artifacts (local + CI)
+tests/backtest/_acceptance_runs/
+tests/backtest/_acceptance_warm_runs/
+
+# Parity + manual run artifacts (local)
+tests/backtest/_parity_runs/
+tests/backtest/_manual_visual_runs/
+
+# Local benchmarks (cache + profiler outputs)
+tests/backtest/_ibkr_speed_burner_cache/
+tests/backtest/_speed_burner_profiles/
+
+# Prod-like local runner output
+backtest_runs/
+artifacts/
+
+# Local tool configs (untracked, user-specific)
+context*.json
+!context7.json
+/tests/backtest/_manual_runs
+
+# Local scratch / diagnostics (never commit)
+tmp/
+.playwright-mcp/
+
+# Local trading bot runtime (SQLite + user overrides)
+data/trading_bot.db
+lumibot/custom_config/user_config.yaml
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Open-source staging safety
+.env
+.env.*
+!.env.example
+!.env.template
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+*.db
+*.sqlite*
+*.log
+.DS_Store
+coverage/
+dist/
+.next/
+.private/
+storage/exports/
+storage/deleted-user-data/
+
+htmlcov/
+coverage.xml
+.coverage
+*.egg-info/
+build/
+
+*.db-*
+*.sqlite-*

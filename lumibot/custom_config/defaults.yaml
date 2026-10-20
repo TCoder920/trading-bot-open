@@ -1,0 +1,164 @@
+active_broker: alpaca
+active_data_provider: alpaca
+trading_mode: simulation
+live_trading_enabled: false
+require_order_review: true
+default_data_source: alpaca
+default_asset_class: stocks
+
+alpaca:
+  enabled: true
+  paper: true
+  data_enabled: true
+  execution_enabled: true
+  data_feed: iex
+  # Feed used for quotes/bars outside regular trading hours. iex is sparse in
+  # pre/post-market; sip carries the full consolidated tape. Alpaca-only.
+  extended_hours_data_feed: sip
+  market: us
+  require_env_credentials: true
+  api_key_env_var: ALPACA_API_KEY
+  api_secret_env_var: ALPACA_API_SECRET
+  oauth_token_env_var: ALPACA_OAUTH_TOKEN
+  is_paper_env_var: ALPACA_IS_PAPER
+  # Real Alpaca PAPER submission is the default for the human-operated app. The mock path
+  # exists ONLY for AI development agents: set ALPACA_MOCK_PAPER_SUBMISSION=true (env overrides
+  # this value) so development tasks never place real paper orders. Editable in the Settings UI.
+  # Simulation mode is always fully mocked regardless; live is separately gated.
+  mock_paper_submission: true
+  # Extended (pre/post-market) trading. Disabled by default; when enabled,
+  # stop/market intents are converted to marketable limit orders.
+  allow_extended_hours: false
+  marketable_limit_offset_pct: 0.2
+
+# Autonomous wall-clock scheduler (drives the strategy iteration in paper/live).
+scheduler:
+  enabled: false
+  interval_seconds: 60
+  reconcile_interval_seconds: 30
+  catch_up_on_start: true
+
+risk_limits:
+  max_dollars_per_trade: 100
+  max_loss_per_trade: 25
+  max_daily_loss: 200
+  max_trades_per_day: 10
+  max_open_positions: 5
+
+paper_trading:
+  assigned_capital:
+  use_assigned_capital_limit: false
+
+watchlist:
+  stocks:
+    - AAPL
+    - MSFT
+    - GOOGL
+    - AMZN
+    - TSLA
+
+active_asset_classes:
+  - stocks
+  - options
+  - crypto
+
+stocks:
+  enabled: true
+  live_enabled: false
+  paper_enabled: true
+  sizing_mode: notional
+  min_order_notional: 1.00
+  max_order_notional:
+
+options:
+  enabled: true
+  live_enabled: false
+  paper_enabled: true
+  require_explicit_enablement: true
+  explicit_enablement: true
+  approval_status: pending
+  account_approved: false
+  max_contracts_per_trade: 1
+  allow_multileg_orders: true
+  # Optional risk cap (dollars) on a single options order's premium (premium x 100 x contracts).
+  # Empty = no cap beyond the global max_dollars_per_trade. Editable in Risk Settings.
+  max_order_notional:
+
+crypto:
+  enabled: true
+  live_enabled: false
+  paper_enabled: false
+  require_explicit_enablement: true
+  explicit_enablement: false
+  max_notional_per_trade: 100
+  # Optional risk cap (dollars) on a single crypto order's notional. Empty = no cap beyond the
+  # global max_dollars_per_trade. Crypto trades 24/7; TP/SL exits are managed around the clock.
+  max_order_notional:
+  allowed_symbols:
+    - BTC/USD
+    - ETH/USD
+
+ui:
+  theme: dark
+  accent_color: white
+  refresh_interval_seconds: 5
+
+# Stocks In Play ORB v1 — default parameters (see docs/strategies/stocks_in_play_orb_v1.md)
+# These are the strategy-level defaults; per-strategy configs created in the UI
+# override these via the strategy template.
+stocks_in_play_orb_v1:
+  # Session / timing (US/Eastern)
+  opening_range_start: "09:30"
+  opening_range_end: "09:35"
+  entry_window_start: "09:35"
+  entry_window_end: "10:30"
+  flatten_time: "15:45"
+  max_entries_per_symbol_per_day: 1
+  # Extended-hours session windows (ET). Used by the autonomous scheduler.
+  premarket_session_start: "04:00"
+  rth_end: "16:00"
+  postmarket_session_end: "20:00"
+  # How ORB signals behave outside RTH. "rth_only" (default) gates opening-range,
+  # RVOL, VWAP and spread signals to regular hours and only manages existing
+  # positions during extended hours. Do NOT fabricate bars to make signals work.
+  extended_hours_signals: rth_only
+  # Universe filters
+  min_price: 5
+  max_price: 500
+  min_avg_daily_dollar_volume: 50000000
+  min_avg_share_volume_20d: 500000
+  min_daily_atr_14: 0.50
+  rvol_min: 2.0
+  top_candidates: 10
+  allowed_asset_class: stocks
+  # Long trigger
+  breakout_buffer: 0.0
+  tick_size: 0.01
+  require_above_vwap: true
+  # Spread filter
+  spread_cap_abs: 0.05
+  spread_cap_bps: 10
+  # Market regime filter
+  enable_spy_regime_filter: true
+  spy_daily_ema_period: 200
+  allow_if_spy_above_daily_ema_200: true
+  enable_intraday_spy_vwap_filter: false
+  # Stop / target / sizing
+  atr_stop_factor: 0.15
+  risk_per_trade_pct: 0.25
+  max_position_notional_pct: 10
+  max_portfolio_gross_pct: 50
+  max_volume_participation_pct: 5
+  # Exits
+  partial_at_R: 2.0
+  move_stop_to_breakeven_after_R: 1.5
+  exit_on_vwap_loss: true
+  # Daily controls
+  max_daily_loss_pct: 1.0
+  max_trades_per_day: 3
+  max_consecutive_losses: 3
+  # Data freshness / slippage
+  max_quote_age_seconds: 60
+  max_bar_age_seconds: 300
+  max_slippage_buffer_pct: 0.5
+  data_source: alpaca

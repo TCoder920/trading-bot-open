@@ -130,7 +130,7 @@ class TestConfig:
                 "live_trading_enabled": False,
             },
         })
-        r = client.post("/api/config/validate-draft", json={"updates": {"trading_mode": "paper"}})
+        r = client.post("/api/config/validate-draft", json={"updates": {"trading_mode": "paper", "mock_paper_submission": False}})
         assert r.status_code == 200
         assert r.json()["errors"]
 

@@ -130,9 +130,20 @@ class TestConfig:
                 "live_trading_enabled": False,
             },
         })
-        r = client.post("/api/config/validate-draft", json={"updates": {"trading_mode": "paper", "mock_paper_submission": False}})
+        r = client.post("/api/config/validate-draft", json={"updates": {"trading_mode": "paper", "alpaca.mock_paper_submission": False}})
         assert r.status_code == 200
         assert r.json()["errors"]
+
+    def test_mocked_paper_mode_allowed_without_alpaca_credentials(self):
+        r = client.post("/api/config/validate-draft", json={
+            "updates": {
+                "trading_mode": "paper",
+                "alpaca.mock_paper_submission": True,
+                "live_trading_enabled": False,
+            },
+        })
+        assert r.status_code == 200
+        assert r.json()["errors"] == []
 
     def test_validate_draft_live_trading(self):
         r = client.post("/api/config/validate-draft", json={

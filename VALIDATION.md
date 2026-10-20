@@ -1,6 +1,6 @@
 # Migration validation — 2026-10-20
 
-- Application tests: **254 passed** (`tests/test_custom`).
+- Application tests: **255 passed** (`tests/test_custom`).
 - Python installation and `pip check`: passed.
 - Frontend installation and production build: passed.
 - Frontend `npm audit`: **0 vulnerabilities** after compatible lockfile updates.
